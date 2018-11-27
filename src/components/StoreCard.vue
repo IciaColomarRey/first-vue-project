@@ -1,9 +1,9 @@
 <template>
-  <v-layout class="card">
-    <v-flex xs12 sm6 offset-sm3>
-      <v-card >
+  <v-layout >
+    <v-flex class="card">
+      <v-card>
         <v-img
-          src="https://cdn.vuetifyjs.com/images/cards/desert.jpg"
+          v-bind:src="card.imageSrc"
           aspect-ratio="2.25"
         ></v-img>
         <v-card-title primary-title>
@@ -13,8 +13,8 @@
           </div>
         </v-card-title>
         <v-card-actions>
-          <v-btn flat color="green">Editar</v-btn>
-          <v-btn flat color="red">Borrar</v-btn>
+          <v-btn flat color="green" @click="editCard">Editar</v-btn>
+          <v-btn flat color="red" @click="deleteCard">Borrar</v-btn>
         </v-card-actions>
       </v-card>
     </v-flex>
@@ -30,6 +30,14 @@ export default {
   data () {
     return {
       msg: 'Welcome to Your Vue.js App'
+    }
+  },
+  methods: {
+    deleteCard () {
+      this.$emit('delete-card', this.card.id)
+    },
+    editCard () {
+      this.$emit('edit-card', this.card)
     }
   }
 }

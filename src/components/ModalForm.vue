@@ -16,12 +16,17 @@
                 <v-text-field
                   label="Nombre del producto"
                   :counter="30"
+                  v-model="productName"
                 ></v-text-field>
                 <v-textarea
                   name="input-7-1"
                   label="Descripción del producto"
-                  value=""
+                  v-model="productDesc"
                 ></v-textarea>
+                <v-text-field
+                  label="Introduce URL imagen"
+                  v-model="productImage"
+                ></v-text-field>
               </v-layout>
             </v-container>
           </v-form>
@@ -34,7 +39,7 @@
           <v-btn
             color="green"
             flat
-            @click="dialog = false"
+            @click="saveData"
           >
             Guardar
           </v-btn>
@@ -47,11 +52,42 @@
 <script>
 export default {
   data: () => ({
-    dialog: false
+    dialog: false,
+    productId: -1,
+    productName: '',
+    productDesc: '',
+    productImage: '',
+    editingCard: false // variable auxiliar que indica si la tarjeta mostrada existe o no
   }),
+  props: [
+    'dataCard'
+  ],
   methods: {
-    showModal () {
+    showModal (dataEditCard) {
       this.dialog = true
+      if (typeof dataEditCard !== 'undefined') {
+        this.productName = dataEditCard.title
+        this.productDesc = dataEditCard.description
+        this.productId = dataEditCard.id
+        this.productImage = dataEditCard.imageSrc
+        this.editingCard = true
+      } else {
+        this.editingCard = false
+      }
+    },
+    saveData () {
+      if (this.productName !== '' && this.productDesc !== '') {
+        let newCard = { id: this.productId, title: this.productName, description: this.productDesc, imageSrc: this.productImage }
+        this.dialog = false
+        this.productName = ''
+        this.productDesc = ''
+        this.productImage = ''
+        if (this.editingCard) {
+          this.$emit('edit-card', newCard)
+        } else {
+          this.$emit('add-new-card', newCard)
+        }
+      }
     }
   }
 }
