@@ -1,6 +1,6 @@
-# vue-project-gravita
+# vue-project
 
-> Development test Gravita
+> My first VUE Project
 
 ## Build Setup
 
